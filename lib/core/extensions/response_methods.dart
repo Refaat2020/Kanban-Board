@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:kanban_board/common/model/failure_model.dart';
+import 'package:kanban_board/core/constants/app_strings.dart';
 
 extension ResponseHandler on Response {
   dynamic handleResponse() async {
@@ -21,24 +22,24 @@ extension ResponseHandler on Response {
 
 extension DioExceptionHandler on DioException {
   String handleDioException(DioExceptionType dioExceptionType) {
+    const dioErrorTypes = {
+      DioExceptionType.connectionTimeout,
+      DioExceptionType.sendTimeout,
+      DioExceptionType.receiveTimeout,
+      DioExceptionType.badCertificate,
+      DioExceptionType.badResponse,
+      DioExceptionType.cancel,
+    };
+
+    if (dioErrorTypes.contains(dioExceptionType)) {
+      return AppStrings.dioError;
+    }
+
     switch (dioExceptionType) {
-      case DioExceptionType.connectionTimeout:
-        return "Sorry, something went wrong. Please try again later.";
-      case DioExceptionType.sendTimeout:
-        return "Sorry, something went wrong. Please try again later.";
-      case DioExceptionType.receiveTimeout:
-        return "Sorry, something went wrong. Please try again later.";
-      case DioExceptionType.badCertificate:
-        return "Sorry, something went wrong. Please try again later."
-            "Sorry, something went wrong. Please try again later.";
-      case DioExceptionType.badResponse:
-        return "Sorry, something went wrong. Please try again later.";
-      case DioExceptionType.cancel:
-        return "Sorry, something went wrong. Please try again later.";
       case DioExceptionType.connectionError:
-        return "No internet connection\nPlease check your internet";
-      case DioExceptionType.unknown:
-        return "No internet connection\nPlease check your internet";
+        return AppStrings.networkError;
+      default:
+        return AppStrings.unknownError;
     }
   }
 }

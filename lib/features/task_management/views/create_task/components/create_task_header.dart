@@ -1,3 +1,4 @@
+import 'package:kanban_board/core/constants/app_strings.dart';
 import 'package:kanban_board/file_export.dart';
 
 class CreateTaskHeader extends StatelessWidget {
@@ -8,7 +9,7 @@ class CreateTaskHeader extends StatelessWidget {
     return Row(
       children: [
         Text(
-          'Add Task',
+          AppStrings.addTask,
           style: context.textTheme.titleLarge?.copyWith(
             fontWeight: FontWeight.bold,
             letterSpacing: 2,
@@ -19,7 +20,7 @@ class CreateTaskHeader extends StatelessWidget {
         TextButton(
           onPressed: () => GoRouter.of(context).pop(),
           child: Text(
-            'Cancel',
+            AppStrings.cancel,
             style: context.textTheme.bodyLarge?.copyWith(
               fontWeight: FontWeight.bold,
               color: AppColors.red1,

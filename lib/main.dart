@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:kanban_board/core/config/app_cubits.dart';
 import 'package:kanban_board/core/config/app_route.dart';
+import 'package:kanban_board/core/constants/app_strings.dart';
 import 'package:kanban_board/core/services/preference_storage.dart';
 import 'package:kanban_board/core/theme/theme_cubit.dart';
 
@@ -36,7 +37,7 @@ class MyApp extends StatelessWidget {
         return MaterialApp.router(
           routerConfig: AppRouter.route,
           theme: theme,
-          title: 'Kanban Board',
+          title: AppStrings.kanbanBoard,
           builder: (context, child) {
             return MediaQuery(
               data: MediaQuery.of(context).copyWith(

@@ -1,4 +1,5 @@
 import 'package:kanban_board/common/widgets/regular_text_field.dart';
+import 'package:kanban_board/core/constants/app_strings.dart';
 import 'package:kanban_board/file_export.dart';
 
 class TaskDescriptionInput extends StatelessWidget {
@@ -12,11 +13,11 @@ class TaskDescriptionInput extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text("Task Description", style: context.textTheme.bodyLarge),
+        Text(AppStrings.taskDescription, style: context.textTheme.bodyLarge),
         const SizedBox(height: 10),
         RegularTextField(
           labelColor: AppColors.white,
-          hintText: "Enter Task Description",
+          hintText: AppStrings.enterTaskDescription,
           controller: textEditingController,
           description: true,
           enableBorderColor: context.theme.dividerColor,

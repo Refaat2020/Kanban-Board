@@ -1,5 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kanban_board/core/constants/app_colors.dart';
+import 'package:kanban_board/core/constants/app_strings.dart';
 import 'package:kanban_board/core/extensions/task_excuter.dart';
 import 'package:kanban_board/features/kanban_board/data/models/kanban_column_data.dart';
 import 'package:kanban_board/features/kanban_board/data/models/task.dart';
@@ -48,20 +49,23 @@ class KanbanCubit extends Cubit<KanbanState> {
         .toList();
 
     final todoColumn = KanbanColumnData(
-        columnId: TaskStatus.todo.index + 1,
-        columnName: 'To Do',
-        tasks: todoList,
-        columnColor: AppColors.geryColor);
+      columnId: TaskStatus.todo.index + 1,
+      columnName: AppStrings.todo,
+      tasks: todoList,
+      columnColor: AppColors.geryColor,
+    );
     final inProgressColumn = KanbanColumnData(
-        columnId: TaskStatus.inProgress.index + 1,
-        columnName: 'In Progress',
-        tasks: inProgressList,
-        columnColor: AppColors.purple2);
+      columnId: TaskStatus.inProgress.index + 1,
+      columnName: AppStrings.inProgress,
+      tasks: inProgressList,
+      columnColor: AppColors.purple2,
+    );
     final doneColumn = KanbanColumnData(
-        columnId: TaskStatus.done.index + 1,
-        columnName: 'Done',
-        tasks: doneList,
-        columnColor: AppColors.green);
+      columnId: TaskStatus.done.index + 1,
+      columnName: AppStrings.done,
+      tasks: doneList,
+      columnColor: AppColors.green,
+    );
 
     columnDataList.addAll([todoColumn, inProgressColumn, doneColumn]);
     emit(KanbanFilteredTasks(filteredTasks: columnDataList));

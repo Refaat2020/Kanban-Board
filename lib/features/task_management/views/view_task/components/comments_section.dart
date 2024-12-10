@@ -1,6 +1,7 @@
 import 'package:kanban_board/common/widgets/empty_state_widget.dart';
 import 'package:kanban_board/common/widgets/error_state.dart';
 import 'package:kanban_board/common/widgets/loading_state.dart';
+import 'package:kanban_board/core/constants/app_strings.dart';
 import 'package:kanban_board/features/task_management/data/models/comment.dart';
 import 'package:kanban_board/features/task_management/domain/cubit/comment_cubit.dart';
 import 'package:kanban_board/features/task_management/views/view_task/components/comment_card.dart';
@@ -21,7 +22,7 @@ class CommentsSection extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          "Comments",
+          AppStrings.comments,
           style: context.textTheme.bodyLarge,
         ),
         const SizedBox(
@@ -37,7 +38,7 @@ class CommentsSection extends StatelessWidget {
           child: ElevatedButton(
             onPressed: () => _onCreateComment(commentCubit, taskId),
             child: Text(
-              'Add Comment',
+              AppStrings.addComment,
               style: context.textTheme.bodyLarge?.copyWith(
                 color: AppColors.purple3,
               ),
@@ -48,7 +49,7 @@ class CommentsSection extends StatelessWidget {
           height: 30,
         ),
         Text(
-          "All comments",
+          AppStrings.allComments,
           style: context.textTheme.bodyLarge,
         ),
         const SizedBox(
@@ -65,7 +66,7 @@ class CommentsSection extends StatelessWidget {
             } else if (state is CommentsEmpty) {
               return EmptyStateWidget(
                 message: Text(
-                  'No Comments Found for this task',
+                  AppStrings.noCommentsFound,
                   style: context.textTheme.bodyLarge,
                 ),
               );

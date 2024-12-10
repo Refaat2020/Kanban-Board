@@ -1,3 +1,4 @@
+import 'package:kanban_board/core/constants/app_strings.dart';
 import 'package:kanban_board/features/task_management/data/models/timer_state.dart';
 import 'package:kanban_board/features/task_management/domain/cubit/timer_cubit.dart';
 import 'package:kanban_board/file_export.dart';
@@ -43,12 +44,12 @@ class _TaskTimerState extends State<TaskTimer> {
                             widget.onTimeElapsed(timerCubit.stopwatch.elapsed);
                           });
                         },
-                  child: const Text("Start"),
+                  child: const Text(AppStrings.start),
                 ),
                 const SizedBox(width: 8),
                 ElevatedButton(
                   onPressed: state.isRunning ? timerCubit.stopTimer : null,
-                  child: const Text("Stop"),
+                  child: const Text(AppStrings.stop),
                 ),
               ],
             ),

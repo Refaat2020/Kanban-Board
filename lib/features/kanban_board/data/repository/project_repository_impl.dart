@@ -12,16 +12,6 @@ class ProjectRepositoryImpl implements ProjectRepository {
 
   @override
   Future<String> getOrCreateDefaultProject() async {
-    final existingProjectId =
-        locator<PreferenceStorage>().getString(AppKeys.defaultProjectKey);
-    if (existingProjectId != null) {
-      return existingProjectId;
-    }
-    final projectId =
-        await _projectDataSource.createProject("Kanban Board Project");
-    await locator<PreferenceStorage>()
-        .setString(AppKeys.defaultProjectKey, projectId);
-    return projectId;
     try {
       final existingProjectId =
           locator<PreferenceStorage>().getString(AppKeys.defaultProjectKey);

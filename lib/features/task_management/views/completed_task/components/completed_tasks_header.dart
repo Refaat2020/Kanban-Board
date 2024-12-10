@@ -1,3 +1,4 @@
+import 'package:kanban_board/core/constants/app_strings.dart';
 import 'package:kanban_board/file_export.dart';
 
 class CompletedTasksHeader extends StatelessWidget {
@@ -8,14 +9,14 @@ class CompletedTasksHeader extends StatelessWidget {
     return Row(
       children: [
         Text(
-          "Completed Tasks",
+          AppStrings.completedTask,
           style: context.theme.textTheme.titleLarge,
         ),
         Spacer(),
         TextButton(
           onPressed: () => GoRouter.of(context).pop(),
           child: Text(
-            "Cancel",
+            AppStrings.cancel,
             style:
                 context.textTheme.titleLarge?.copyWith(color: AppColors.red1),
           ),

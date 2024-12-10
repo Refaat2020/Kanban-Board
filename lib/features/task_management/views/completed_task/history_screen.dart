@@ -1,4 +1,5 @@
 import 'package:kanban_board/common/widgets/empty_state_widget.dart';
+import 'package:kanban_board/core/constants/app_strings.dart';
 import 'package:kanban_board/features/kanban_board/data/models/task.dart';
 import 'package:kanban_board/features/task_management/views/completed_task/components/completed_task_card.dart';
 import 'package:kanban_board/features/task_management/views/completed_task/components/completed_tasks_header.dart';
@@ -31,9 +32,10 @@ class HistoryScreen extends StatelessWidget {
                   )
                 : EmptyStateWidget(
                     message: Text(
-                    "No Tasks Found",
-                    style: context.textTheme.titleLarge,
-                  ))
+                      AppStrings.noTasksFound,
+                      style: context.textTheme.titleLarge,
+                    ),
+                  )
           ],
         ),
       ),

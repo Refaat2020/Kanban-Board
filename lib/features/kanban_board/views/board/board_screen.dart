@@ -6,6 +6,7 @@ import 'package:kanban_board/common/widgets/error_state.dart';
 import 'package:kanban_board/common/widgets/loading_state.dart';
 import 'package:kanban_board/core/constants/app_colors.dart';
 import 'package:kanban_board/core/constants/app_keys.dart';
+import 'package:kanban_board/core/constants/app_strings.dart';
 import 'package:kanban_board/core/extensions/theme_extensions.dart';
 import 'package:kanban_board/core/services/preference_storage.dart';
 import 'package:kanban_board/core/services/service_locator.dart';
@@ -47,7 +48,7 @@ class _BoardScreenState extends State<BoardScreen> {
         if (state is TaskManagementUpdatedDone) {
           kanbanCubit.fetchTasks(_projectId);
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('Task updated Successfully')),
+            SnackBar(content: Text(AppStrings.taskUpdatedSuccessfully)),
           );
         } else if (state is TaskManagementError) {
           ScaffoldMessenger.of(context).showSnackBar(
@@ -61,7 +62,7 @@ class _BoardScreenState extends State<BoardScreen> {
               GoRouter.of(context).pushNamed(CreateTaskScreen.routeName),
           backgroundColor: AppColors.purple3,
           child: Text(
-            "ADD",
+            AppStrings.add,
             style: context.textTheme.bodyLarge,
           ),
         ),
@@ -76,30 +77,18 @@ class _BoardScreenState extends State<BoardScreen> {
             ),
           ),
           title: Text(
-            "Kanban Board",
+            AppStrings.kanbanBoard,
             style: context.textTheme.titleLarge,
           ),
           centerTitle: true,
           elevation: 0,
           actions: [
             TextButton(
-                onPressed: () {
-                  List<Task> listOfCompletedTasks = [];
-                  if (context.read<KanbanCubit>().columnDataList.isNotEmpty &&
-                      context
-                          .read<KanbanCubit>()
-                          .columnDataList[2]
-                          .tasks
-                          .isNotEmpty) {
-                    listOfCompletedTasks =
-                        context.read<KanbanCubit>().columnDataList[2].tasks;
-                  }
-                  GoRouter.of(context).pushNamed(HistoryScreen.routeName,
-                      extra: listOfCompletedTasks);
-                },
-                child: Text(
-                  'Completed Tasks',
-                ))
+              onPressed: _getCompletedTasks,
+              child: Text(
+                AppStrings.completedTask,
+              ),
+            )
           ],
         ),
         body: BlocConsumer<KanbanCubit, KanbanState>(
@@ -118,20 +107,32 @@ class _BoardScreenState extends State<BoardScreen> {
                 padding:
                     EdgeInsets.only(top: MediaQuery.sizeOf(context).height / 4),
                 child: EmptyStateWidget(
-                    message: Text(
-                  "No Tasks Found",
-                  style: context.textTheme.titleLarge,
-                )),
+                  message: Text(
+                    AppStrings.noTasksFound,
+                    style: context.textTheme.titleLarge,
+                  ),
+                ),
               );
             } else if (state is KanbanFilteredTasks) {
               return FilteredTasksView(
                 filteredTasks: state.filteredTasks,
               );
             }
-            return ErrorState('Something went wrong');
+            return ErrorState(AppStrings.somethingWentWrong);
           },
         ),
       ),
     );
+  }
+
+  void _getCompletedTasks() {
+    List<Task> listOfCompletedTasks = [];
+    if (context.read<KanbanCubit>().columnDataList.isNotEmpty &&
+        context.read<KanbanCubit>().columnDataList[2].tasks.isNotEmpty) {
+      listOfCompletedTasks =
+          context.read<KanbanCubit>().columnDataList[2].tasks;
+    }
+    GoRouter.of(context)
+        .pushNamed(HistoryScreen.routeName, extra: listOfCompletedTasks);
   }
 }

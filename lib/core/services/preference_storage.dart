@@ -18,15 +18,6 @@ class PreferenceStorage {
     }
   }
 
-  Future<bool?> setInt(String key, int value) async {
-    try {
-      return await _sharedPreferencesStorage.setInt(key, value);
-    } catch (e) {
-      debugPrint(e.toString());
-      return null;
-    }
-  }
-
   Future<bool?> setBool(String key, bool value) async {
     try {
       return await _sharedPreferencesStorage.setBool(key, value);
@@ -41,19 +32,6 @@ class PreferenceStorage {
   ) {
     try {
       return _sharedPreferencesStorage.getString(
-        key,
-      );
-    } catch (e) {
-      debugPrint(e.toString());
-      return null;
-    }
-  }
-
-  int? getInt(
-    String key,
-  ) {
-    try {
-      return _sharedPreferencesStorage.getInt(
         key,
       );
     } catch (e) {

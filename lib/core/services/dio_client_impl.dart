@@ -3,58 +3,6 @@ import 'package:kanban_board/common/model/failure_model.dart';
 import 'package:kanban_board/core/config/dio_options.dart';
 import 'package:kanban_board/core/extensions/response_methods.dart';
 import 'package:kanban_board/core/services/dio_client.dart';
-//
-// class DioClient {
-//   Dio dio = Dio()..interceptors.add(DioNetworkLogger());
-//
-//   Future<dynamic> getRequest(String apiUrl,
-//       {Map<String, dynamic>? prams, bool? responseBytes}) async {
-//     try {
-//       dio.options = await DioConfigOptions.getBaseOption();
-//       Response response = prams == null
-//           ? await dio.get(apiUrl,
-//               options: Options(
-//                   responseType:
-//                       responseBytes == true ? ResponseType.bytes : null))
-//           : await dio.get(apiUrl,
-//               queryParameters: prams,
-//               options: Options(
-//                   responseType:
-//                       responseBytes == true ? ResponseType.bytes : null));
-//
-//       return response.handleResponse();
-//     } catch (e) {
-//       if (e is DioException) {
-//         throw FailureModel(
-//           message: e.handleDioException(e.type),
-//           state: 0,
-//         );
-//       }
-//       throw Exception(e);
-//     }
-//   }
-//
-//   /*
-//    * Post Request Function
-//    */
-//   Future<dynamic> postRequest(body, String apiUrl,
-//       {bool hasImages = false}) async {
-//     try {
-//       dio.options = await DioConfigOptions.getBaseOption();
-//       Response response = await dio.post(apiUrl,
-//           data: hasImages == true ? FormData.fromMap(body) : body);
-//       return response.handleResponse();
-//     } catch (e) {
-//       if (e is DioException) {
-//         throw FailureModel(
-//           message: e.handleDioException(e.type),
-//           state: 0,
-//         );
-//       }
-//       throw Exception(e);
-//     }
-//   }
-// }
 
 class DioClientImpl implements DioClient {
   final Dio dio;

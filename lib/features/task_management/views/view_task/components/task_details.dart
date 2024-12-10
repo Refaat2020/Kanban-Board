@@ -1,3 +1,4 @@
+import 'package:kanban_board/core/constants/app_strings.dart';
 import 'package:kanban_board/features/kanban_board/data/models/task.dart';
 import 'package:kanban_board/features/task_management/domain/cubit/task_management_cubit.dart';
 import 'package:kanban_board/features/task_management/domain/cubit/timer_cubit.dart';
@@ -59,7 +60,7 @@ class TaskDetails extends StatelessWidget {
                     ? null
                     : _onUpdateTask(taskManagementCubit, task),
                 child: Text(
-                  'Update',
+                  AppStrings.update,
                   style: context.textTheme.bodyLarge?.copyWith(
                     color: AppColors.purple3,
                   ),
