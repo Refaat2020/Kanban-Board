@@ -21,20 +21,20 @@ jobs:
         with:
           flutter-version: "3.24.3"
 
-      # Setup Java for Android
-      - uses: actions/setup-java@v3
-        with:
-          distribution: 'zulu'
-          java-version: "12.x"
-          cache: gradle
+      # Set up environment variables
+      - name: Set environment variables
+        run: |
+          echo "API_URL=${{ secrets.API_URL }}" >> $GITHUB_ENV
+          echo "API_KEY=${{ secrets.API_KEY }}" >> $GITHUB_ENV
+          # Add other secrets as needed
 
-      # Get dependencies
+      # Install dependencies
       - name: Install dependencies
         run: flutter pub get
 
-      # Run build_runner to generate code (e.g., json_serializable)
+      # Run build_runner
       - name: Run build_runner
-        run: dart run build_runner build --delete-conflicting-outputs
+        run: flutter pub run build_runner build --delete-conflicting-outputs
 
       # Run tests
       - name: Run tests
