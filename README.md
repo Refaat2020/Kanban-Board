@@ -112,7 +112,7 @@ This app uses **Flutter Bloc** and **Cubit** for effective state management.
 
 1. **Clone the repository**:
    ```bash
-   git clone https://github.com/username/repo-name.git
+   git clone https://github.com/Refaat2020/Kanban-Board.git
    cd repo-name
    ```
 
