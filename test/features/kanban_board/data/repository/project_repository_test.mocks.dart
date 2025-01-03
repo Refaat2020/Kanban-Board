@@ -83,22 +83,6 @@ class MockPreferenceStorage extends _i1.Mock implements _i5.PreferenceStorage {
       ) as _i3.Future<bool?>);
 
   @override
-  _i3.Future<bool?> setInt(
-    String? key,
-    int? value,
-  ) =>
-      (super.noSuchMethod(
-        Invocation.method(
-          #setInt,
-          [
-            key,
-            value,
-          ],
-        ),
-        returnValue: _i3.Future<bool?>.value(),
-      ) as _i3.Future<bool?>);
-
-  @override
   _i3.Future<bool?> setBool(
     String? key,
     bool? value,
@@ -119,12 +103,6 @@ class MockPreferenceStorage extends _i1.Mock implements _i5.PreferenceStorage {
         #getString,
         [key],
       )) as String?);
-
-  @override
-  int? getInt(String? key) => (super.noSuchMethod(Invocation.method(
-        #getInt,
-        [key],
-      )) as int?);
 
   @override
   bool? getBool(String? key) => (super.noSuchMethod(Invocation.method(
