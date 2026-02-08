@@ -24,7 +24,7 @@ class TaskManagementRepositoryImpl implements TaskManagementRepository {
 
       await _queue.enqueue(
         SyncQueueItem()
-          ..entityId = task.id
+          ..entityId = task.id ?? task.labels?.first
           ..entityType = 'task'
           ..action = 'create'
           ..payload = jsonEncode(TaskModel.fromEntity(task).toJson())

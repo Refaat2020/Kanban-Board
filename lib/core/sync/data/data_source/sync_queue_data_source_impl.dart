@@ -1,6 +1,7 @@
+import 'dart:convert';
+
 import 'package:isar_community/isar.dart';
 import 'package:kanban_board/core/services/isar_service.dart';
-import 'package:logger/logger.dart';
 
 import '../models/sync_queue_item.dart';
 import 'sync_queue_data_source.dart';
@@ -14,18 +15,18 @@ class SyncQueueDataSourceImpl implements SyncQueueDataSource {
       final existing = await _isar.syncQueueItems
           .filter()
           .entityIdEqualTo(item.entityId)
+          .and()
           .entityTypeEqualTo(item.entityType)
           .findFirst();
+      Map<dynamic, dynamic> payload = jsonDecode(item.payload);
       if (existing != null) {
-        Logger().f(existing.payload);
         existing
           ..payload = item.payload
-          ..action = item.action
+          ..action = item.action == 'update' ? 'create' : item.action
           ..nextRetryAt = DateTime.now();
 
         await _isar.syncQueueItems.put(existing);
       } else {
-        Logger().f(item.payload);
         await _isar.syncQueueItems.put(item);
       }
     });

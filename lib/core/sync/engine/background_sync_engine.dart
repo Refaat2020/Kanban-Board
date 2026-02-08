@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:kanban_board/features/kanban_board/domain/entities/task.dart';
-import 'package:logger/logger.dart';
 
 import '../../../../features/kanban_board/data/data_source/task_local_data_source.dart';
 import '../../../../features/kanban_board/data/models/task_local_model.dart';
@@ -58,8 +57,6 @@ class BackgroundSyncEngine {
 
   Future<void> _processTask(SyncQueueItem item) async {
     final payload = jsonDecode(item.payload);
-    Logger().e(item.payload);
-
     switch (item.action) {
       case 'create':
         final response = await _remote.createTask(payload);

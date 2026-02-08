@@ -6,16 +6,14 @@
 import 'dart:async' as _i3;
 
 import 'package:kanban_board/core/sync/data/data_source/sync_queue_data_source.dart'
-    as _i7;
-import 'package:kanban_board/core/sync/data/models/sync_queue_item.dart' as _i8;
-import 'package:kanban_board/features/kanban_board/data/data_source/task_local_data_source.dart'
-    as _i4;
-import 'package:kanban_board/features/kanban_board/data/models/task_local_model.dart'
     as _i6;
-import 'package:kanban_board/features/kanban_board/domain/entities/task.dart'
-    as _i5;
-import 'package:kanban_board/features/task_management/data/data_source/task_management_data_source.dart'
+import 'package:kanban_board/core/sync/data/models/sync_queue_item.dart' as _i7;
+import 'package:kanban_board/features/kanban_board/data/data_source/task_local_data_source.dart'
     as _i2;
+import 'package:kanban_board/features/kanban_board/data/models/task_local_model.dart'
+    as _i5;
+import 'package:kanban_board/features/kanban_board/domain/entities/task.dart'
+    as _i4;
 import 'package:mockito/mockito.dart' as _i1;
 
 // ignore_for_file: type=lint
@@ -33,60 +31,25 @@ import 'package:mockito/mockito.dart' as _i1;
 // ignore_for_file: subtype_of_sealed_class
 // ignore_for_file: invalid_use_of_internal_member
 
-/// A class which mocks [TaskManagementDataSource].
-///
-/// See the documentation for Mockito's code generation for more information.
-class MockTaskManagementDataSource extends _i1.Mock
-    implements _i2.TaskManagementDataSource {
-  MockTaskManagementDataSource() {
-    _i1.throwOnMissingStub(this);
-  }
-
-  @override
-  _i3.Future<Map<String, dynamic>> createTask(
-    Map<String, dynamic>? taskContent,
-  ) =>
-      (super.noSuchMethod(
-            Invocation.method(#createTask, [taskContent]),
-            returnValue: _i3.Future<Map<String, dynamic>>.value(
-              <String, dynamic>{},
-            ),
-          )
-          as _i3.Future<Map<String, dynamic>>);
-
-  @override
-  _i3.Future<Map<String, dynamic>> updateTask(
-    Map<String, dynamic>? updatedTaskContent,
-    String? taskId,
-  ) =>
-      (super.noSuchMethod(
-            Invocation.method(#updateTask, [updatedTaskContent, taskId]),
-            returnValue: _i3.Future<Map<String, dynamic>>.value(
-              <String, dynamic>{},
-            ),
-          )
-          as _i3.Future<Map<String, dynamic>>);
-}
-
 /// A class which mocks [TaskLocalDataSource].
 ///
 /// See the documentation for Mockito's code generation for more information.
 class MockTaskLocalDataSource extends _i1.Mock
-    implements _i4.TaskLocalDataSource {
+    implements _i2.TaskLocalDataSource {
   MockTaskLocalDataSource() {
     _i1.throwOnMissingStub(this);
   }
 
   @override
-  _i3.Future<List<_i5.Task>> getTasks(String? projectId) =>
+  _i3.Future<List<_i4.Task>> getTasks(String? projectId) =>
       (super.noSuchMethod(
             Invocation.method(#getTasks, [projectId]),
-            returnValue: _i3.Future<List<_i5.Task>>.value(<_i5.Task>[]),
+            returnValue: _i3.Future<List<_i4.Task>>.value(<_i4.Task>[]),
           )
-          as _i3.Future<List<_i5.Task>>);
+          as _i3.Future<List<_i4.Task>>);
 
   @override
-  _i3.Future<void> upsertTask(_i6.TaskLocalModel? task) =>
+  _i3.Future<void> upsertTask(_i5.TaskLocalModel? task) =>
       (super.noSuchMethod(
             Invocation.method(#upsertTask, [task]),
             returnValue: _i3.Future<void>.value(),
@@ -95,7 +58,7 @@ class MockTaskLocalDataSource extends _i1.Mock
           as _i3.Future<void>);
 
   @override
-  _i3.Future<void> saveTasks(List<_i6.TaskLocalModel>? tasks) =>
+  _i3.Future<void> saveTasks(List<_i5.TaskLocalModel>? tasks) =>
       (super.noSuchMethod(
             Invocation.method(#saveTasks, [tasks]),
             returnValue: _i3.Future<void>.value(),
@@ -104,27 +67,27 @@ class MockTaskLocalDataSource extends _i1.Mock
           as _i3.Future<void>);
 
   @override
-  _i3.Future<List<_i6.TaskLocalModel>> getUnsyncedTasks() =>
+  _i3.Future<List<_i5.TaskLocalModel>> getUnsyncedTasks() =>
       (super.noSuchMethod(
             Invocation.method(#getUnsyncedTasks, []),
-            returnValue: _i3.Future<List<_i6.TaskLocalModel>>.value(
-              <_i6.TaskLocalModel>[],
+            returnValue: _i3.Future<List<_i5.TaskLocalModel>>.value(
+              <_i5.TaskLocalModel>[],
             ),
           )
-          as _i3.Future<List<_i6.TaskLocalModel>>);
+          as _i3.Future<List<_i5.TaskLocalModel>>);
 }
 
 /// A class which mocks [SyncQueueDataSource].
 ///
 /// See the documentation for Mockito's code generation for more information.
 class MockSyncQueueDataSource extends _i1.Mock
-    implements _i7.SyncQueueDataSource {
+    implements _i6.SyncQueueDataSource {
   MockSyncQueueDataSource() {
     _i1.throwOnMissingStub(this);
   }
 
   @override
-  _i3.Future<void> enqueue(_i8.SyncQueueItem? item) =>
+  _i3.Future<void> enqueue(_i7.SyncQueueItem? item) =>
       (super.noSuchMethod(
             Invocation.method(#enqueue, [item]),
             returnValue: _i3.Future<void>.value(),
@@ -133,17 +96,17 @@ class MockSyncQueueDataSource extends _i1.Mock
           as _i3.Future<void>);
 
   @override
-  _i3.Future<List<_i8.SyncQueueItem>> getReadyItems(DateTime? now) =>
+  _i3.Future<List<_i7.SyncQueueItem>> getReadyItems(DateTime? now) =>
       (super.noSuchMethod(
             Invocation.method(#getReadyItems, [now]),
-            returnValue: _i3.Future<List<_i8.SyncQueueItem>>.value(
-              <_i8.SyncQueueItem>[],
+            returnValue: _i3.Future<List<_i7.SyncQueueItem>>.value(
+              <_i7.SyncQueueItem>[],
             ),
           )
-          as _i3.Future<List<_i8.SyncQueueItem>>);
+          as _i3.Future<List<_i7.SyncQueueItem>>);
 
   @override
-  _i3.Future<void> update(_i8.SyncQueueItem? item) =>
+  _i3.Future<void> update(_i7.SyncQueueItem? item) =>
       (super.noSuchMethod(
             Invocation.method(#update, [item]),
             returnValue: _i3.Future<void>.value(),
@@ -152,7 +115,7 @@ class MockSyncQueueDataSource extends _i1.Mock
           as _i3.Future<void>);
 
   @override
-  _i3.Future<void> remove(_i8.SyncQueueItem? item) =>
+  _i3.Future<void> remove(_i7.SyncQueueItem? item) =>
       (super.noSuchMethod(
             Invocation.method(#remove, [item]),
             returnValue: _i3.Future<void>.value(),

@@ -1,5 +1,4 @@
 import 'package:isar_community/isar.dart';
-import 'package:logger/logger.dart';
 
 import '../../../../core/services/isar_service.dart';
 import '../../domain/entities/task.dart';
@@ -26,7 +25,6 @@ class TaskLocalDataSourceImpl implements TaskLocalDataSource {
           .filter()
           .labelsElementContains(task.labels?.first ?? '')
           .findFirst();
-      Logger().e(existing);
       if (existing != null) {
         existing
           ..taskId = task.taskId

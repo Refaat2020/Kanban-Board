@@ -76,13 +76,14 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
       final projectId = locator<PreferenceStorage>().getString(
         AppKeys.defaultProjectKey,
       );
-
+      final localId = UuidV4().generate();
       final taskData = TaskModel(
+        id: localId,
         projectId: projectId,
         content: cubit.taskTitle,
         description: cubit.taskContent,
         priority: cubit.selectedStatus.index + 1,
-        labels: [UuidV4().generate()],
+        labels: [localId],
       );
 
       await cubit.createTask(taskData);
