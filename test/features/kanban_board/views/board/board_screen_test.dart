@@ -5,9 +5,9 @@ import 'package:kanban_board/common/widgets/loading_state.dart';
 import 'package:kanban_board/core/constants/app_keys.dart';
 import 'package:kanban_board/core/services/preference_storage.dart';
 import 'package:kanban_board/core/services/service_locator.dart';
-import 'package:kanban_board/features/kanban_board/domain/cubit/kanban_cubit.dart';
-import 'package:kanban_board/features/kanban_board/views/board/board_screen.dart';
-import 'package:kanban_board/features/task_management/domain/cubit/task_management_cubit.dart';
+import 'package:kanban_board/features/kanban_board/presentation/cubit/kanban_cubit.dart';
+import 'package:kanban_board/features/kanban_board/presentation/views/board/board_screen.dart';
+import 'package:kanban_board/features/task_management/presentation/cubit/task_management_cubit.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:kanban_board/features/kanban_board/data/models/task.dart';
-import 'package:kanban_board/features/kanban_board/views/board/components/kanban_task_card.dart';
+import 'package:kanban_board/features/kanban_board/domain/entities/task.dart';
+import 'package:kanban_board/features/kanban_board/presentation/views/board/components/kanban_task_card.dart';
 
 void main() {
   group(

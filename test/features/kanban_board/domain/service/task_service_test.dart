@@ -1,8 +1,8 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:kanban_board/common/model/failure_model.dart';
-import 'package:kanban_board/features/kanban_board/data/models/task.dart';
 import 'package:kanban_board/features/kanban_board/data/repository/task_repository.dart';
-import 'package:kanban_board/features/kanban_board/domain/service/task_service.dart';
+import 'package:kanban_board/features/kanban_board/domain/entities/task.dart';
+import 'package:kanban_board/features/kanban_board/domain/usecases/fetch_tasks.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
@@ -12,12 +12,12 @@ import 'task_service_test.mocks.dart';
 void main() {
   late MockTaskRepository mockTaskRepository;
 
-  late TaskService taskService;
+  late FetchTasks taskService;
 
   setUp(() {
     mockTaskRepository = MockTaskRepository();
 
-    taskService = TaskService(mockTaskRepository);
+    taskService = FetchTasks(mockTaskRepository);
   });
 
   group(
@@ -34,7 +34,7 @@ void main() {
             .thenAnswer((_) async => mockResponse);
 
         // Act
-        final result = await taskService.fetchTasks(projectId);
+        final result = await taskService.call(projectId);
 
         // Assert
         expect(result, isA<List<Task>>());
@@ -56,7 +56,7 @@ void main() {
 
         // Act & Assert
         expect(
-          () async => await taskService.fetchTasks(projectId),
+          () async => await taskService.call(projectId),
           throwsA(isA<FailureModel>()
               .having((e) => e.message, 'message', 'Failed to fetch tasks')),
         );
@@ -72,7 +72,7 @@ void main() {
 
         // Act & Assert
         expect(
-          () async => await taskService.fetchTasks(projectId),
+          () async => await taskService.call(projectId),
           throwsA(isA<FailureModel>()
               .having((e) => e.message, 'message', errorMessage)),
         );

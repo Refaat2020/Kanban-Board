@@ -1,5 +1,7 @@
-import 'package:kanban_board/features/kanban_board/data/models/task.dart';
+import '../../domain/entities/task.dart';
 
 abstract class TaskRepository {
   Future<List<Task>> fetchTasks(String projectId);
+  Future<void> initialSync(String projectId);
+
 }

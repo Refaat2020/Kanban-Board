@@ -1,25 +1,30 @@
 import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:kanban_board/common/model/failure_model.dart';
-import 'package:kanban_board/features/task_management/data/models/comment.dart';
-import 'package:kanban_board/features/task_management/domain/cubit/comment_cubit.dart';
-import 'package:kanban_board/features/task_management/domain/service/comment_service.dart';
+import 'package:kanban_board/features/task_management/data/models/comment_model.dart';
+import 'package:kanban_board/features/task_management/domain/entities/comment.dart';
+import 'package:kanban_board/features/task_management/domain/usecases/add_comment.dart';
+import 'package:kanban_board/features/task_management/domain/usecases/fetch_comments.dart';
+import 'package:kanban_board/features/task_management/presentation/cubit/comment_cubit.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
 import 'comment_cubit_test.mocks.dart';
 
 @GenerateMocks([
-  CommentService,
+  AddComment,
+  FetchComments,
 ])
 void main() {
-  late MockCommentService mockCommentService;
+  late MockAddComment mockAddComment;
+  late MockFetchComments mockFetchComments;
   const taskId = '123';
-  final comment = Comment(taskId: '123', content: 'This is a comment');
+  final comment = CommentModel(taskId: '123', content: 'This is a comment');
   final responseComment =
       Comment(taskId: '123', content: 'This is a comment', id: '1');
   setUp(() {
-    mockCommentService = MockCommentService();
+    mockAddComment = MockAddComment();
+    mockFetchComments=MockFetchComments();
   });
 
   group(
@@ -28,10 +33,10 @@ void main() {
       blocTest<CommentCubit, CommentState>(
         'emits [CommentLoading, CommentsEmpty] when fetch comments succeeds',
         build: () {
-          when(mockCommentService.fetchComments(taskId))
+          when(mockFetchComments.call(taskId))
               .thenAnswer((_) async => []);
 
-          return CommentCubit(mockCommentService);
+          return CommentCubit(mockFetchComments,mockAddComment);
         },
         act: (bloc) async {
           await bloc.fetchComments(taskId);
@@ -50,10 +55,10 @@ void main() {
             Comment(id: '2', content: 'This is a comment', taskId: taskId),
             Comment(id: '3', content: 'This is a comment', taskId: taskId),
           ];
-          when(mockCommentService.fetchComments(taskId))
+          when(mockFetchComments.call(taskId))
               .thenAnswer((_) async => mockResponse);
 
-          return CommentCubit(mockCommentService);
+          return CommentCubit(mockFetchComments,mockAddComment);
         },
         act: (bloc) async {
           await bloc.fetchComments(taskId);
@@ -69,7 +74,7 @@ void main() {
         build: () {
           const errorMessage = 'fetch comments failed';
 
-          when(mockCommentService.fetchComments(taskId)).thenAnswer(
+          when(mockFetchComments.call(taskId)).thenAnswer(
             (_) async => Future.error(
               FailureModel(
                 state: 400,
@@ -78,7 +83,7 @@ void main() {
             ),
           );
 
-          return CommentCubit(mockCommentService);
+          return CommentCubit(mockFetchComments,mockAddComment);
         },
         act: (bloc) async {
           await bloc.fetchComments(taskId);
@@ -98,10 +103,10 @@ void main() {
       blocTest<CommentCubit, CommentState>(
         'emits [CommentAdding, CommentLoaded] when fetch comments succeeds',
         build: () {
-          when(mockCommentService.addComment(comment))
+          when(mockAddComment.call(comment))
               .thenAnswer((_) async => responseComment);
 
-          return CommentCubit(mockCommentService);
+          return CommentCubit(mockFetchComments,mockAddComment);
         },
         act: (bloc) async {
           await bloc.addComment(comment);
@@ -117,7 +122,7 @@ void main() {
         build: () {
           const errorMessage = 'add comment failed';
 
-          when(mockCommentService.addComment(comment)).thenAnswer(
+          when(mockAddComment.call(comment)).thenAnswer(
             (_) async => Future.error(
               FailureModel(
                 state: 400,
@@ -126,7 +131,7 @@ void main() {
             ),
           );
 
-          return CommentCubit(mockCommentService);
+          return CommentCubit(mockFetchComments,mockAddComment);
         },
         act: (bloc) async {
           await bloc.addComment(comment);

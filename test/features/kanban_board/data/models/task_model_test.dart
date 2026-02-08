@@ -1,5 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:kanban_board/features/kanban_board/data/models/task.dart';
+import 'package:kanban_board/features/kanban_board/data/models/task_model.dart';
+import 'package:kanban_board/features/kanban_board/domain/entities/task.dart';
 
 void main() {
   group(
@@ -8,7 +9,7 @@ void main() {
       test(
         'Task  model takes Object and return Json',
         () {
-          Task task = Task(content: "content", description: "description");
+          TaskModel task = TaskModel(content: "content", description: "description");
           Map<String, dynamic> json = {
             "content": "content",
             "description": "description"
@@ -20,13 +21,13 @@ void main() {
       test(
         'Task  model takes json and return object',
         () {
-          final Task task =
-              Task(content: "content", description: "description");
+          final TaskModel task =
+          TaskModel(content: "content", description: "description");
           Map<String, dynamic> json = {
             "content": "content",
             "description": "description"
           };
-          var formJson = Task.fromJson(json);
+          var formJson = TaskModel.fromJson(json);
           expect(formJson, task);
         },
       );

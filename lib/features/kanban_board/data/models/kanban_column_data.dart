@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:kanban_board/features/kanban_board/data/models/task.dart';
+import 'package:kanban_board/features/kanban_board/data/models/task_model.dart';
+
+import '../../domain/entities/task.dart';
 
 class KanbanColumnData {
   final int columnId;
@@ -18,7 +20,7 @@ class KanbanColumnData {
     final int? columnId,
     final String? columnName,
     final Color? columnColor,
-    final List<Task>? tasks,
+    final List<TaskModel>? tasks,
   }) {
     return KanbanColumnData(
       columnId: columnId ?? this.columnId,

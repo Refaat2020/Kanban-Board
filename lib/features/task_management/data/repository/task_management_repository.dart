@@ -1,4 +1,5 @@
-import 'package:kanban_board/features/kanban_board/data/models/task.dart';
+
+import '../../../kanban_board/domain/entities/task.dart';
 
 abstract class TaskManagementRepository {
   Future<Task> createTask(Task task);

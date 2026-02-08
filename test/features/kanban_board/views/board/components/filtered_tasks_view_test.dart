@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:kanban_board/features/kanban_board/data/models/kanban_column_data.dart';
-import 'package:kanban_board/features/kanban_board/views/board/components/filtered_tasks_view.dart';
-import 'package:kanban_board/features/kanban_board/views/board/components/kanban_column.dart';
+import 'package:kanban_board/features/kanban_board/presentation/views/board/components/filtered_tasks_view.dart';
+import 'package:kanban_board/features/kanban_board/presentation/views/board/components/kanban_column.dart';
 
 void main() {
   group(

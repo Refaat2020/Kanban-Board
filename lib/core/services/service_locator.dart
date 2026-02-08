@@ -1,3 +1,4 @@
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
 import 'package:kanban_board/core/config/dio_options.dart';
@@ -14,8 +15,7 @@ import 'package:kanban_board/features/kanban_board/data/repository/project_repos
 import 'package:kanban_board/features/kanban_board/data/repository/project_repository_impl.dart';
 import 'package:kanban_board/features/kanban_board/data/repository/task_repository.dart';
 import 'package:kanban_board/features/kanban_board/data/repository/task_repository_impl.dart';
-import 'package:kanban_board/features/kanban_board/domain/service/project_service.dart';
-import 'package:kanban_board/features/kanban_board/domain/service/task_service.dart';
+import 'package:kanban_board/features/kanban_board/domain/usecases/fetch_tasks.dart';
 import 'package:kanban_board/features/task_management/data/data_source/comment_data_source.dart';
 import 'package:kanban_board/features/task_management/data/data_source/comment_data_source_impl.dart';
 import 'package:kanban_board/features/task_management/data/data_source/task_management_data_source.dart';
@@ -24,22 +24,37 @@ import 'package:kanban_board/features/task_management/data/repository/comment_re
 import 'package:kanban_board/features/task_management/data/repository/comment_repository_impl.dart';
 import 'package:kanban_board/features/task_management/data/repository/task_management_repository.dart';
 import 'package:kanban_board/features/task_management/data/repository/task_management_repository_impl.dart';
-import 'package:kanban_board/features/task_management/domain/service/comment_service.dart';
-import 'package:kanban_board/features/task_management/domain/service/task_management_service.dart';
+import 'package:kanban_board/features/task_management/domain/usecases/create_task.dart';
+import 'package:kanban_board/features/task_management/domain/usecases/update_task.dart';
 
+import '../../features/kanban_board/data/data_source/task_local_data_source.dart';
+import '../../features/kanban_board/data/data_source/task_local_data_source_impl.dart';
+import '../../features/kanban_board/domain/usecases/get_or_create_default_project.dart';
+import '../../features/kanban_board/domain/usecases/initial_sync_tasks.dart';
+import '../../features/task_management/domain/usecases/add_comment.dart';
+import '../../features/task_management/domain/usecases/fetch_comments.dart';
+import '../bootstrap/app_bootstrap.dart';
+import '../network/network_info.dart';
+import '../network/network_info_impl.dart';
+import '../sync/data/data_source/sync_queue_data_source.dart';
+import '../sync/data/data_source/sync_queue_data_source_impl.dart';
+import '../sync/engine/background_sync_engine.dart';
 import 'dio_client_impl.dart';
 
 final locator = GetIt.instance;
 
-///how to take object from class in service locator
+///how to take object from class in usecases locator
 /// Repo repo = locator<Repo>();
 void setupLocator() {
   // App Services
   locator.registerLazySingleton<Dio>(
-      () => Dio()..interceptors.add(DioNetworkLogger()));
+    () => Dio()..interceptors.add(DioNetworkLogger()),
+  );
 
   locator.registerLazySingleton<DioConfigOptions>(() => DioConfigOptions());
-
+  locator.registerLazySingleton<NetworkInfo>(
+    () => NetworkInfoImpl(Connectivity()),
+  );
   locator.registerLazySingleton<DioClient>(
     () => DioClientImpl(
       dio: locator<Dio>(),
@@ -50,6 +65,9 @@ void setupLocator() {
   locator.registerLazySingleton(() => PreferenceStorage());
 
   locator.registerLazySingleton<ThemeRepository>(() => ThemeRepositoryImpl());
+  locator.registerLazySingleton<SyncQueueDataSource>(
+    () => SyncQueueDataSourceImpl(),
+  );
 
   //  Feature Data source
 
@@ -59,6 +77,9 @@ void setupLocator() {
 
   locator.registerLazySingleton<TaskDataSource>(
     () => TasksDataSourceImpl(locator<DioClient>()),
+  );
+  locator.registerLazySingleton<TaskLocalDataSource>(
+    () => TaskLocalDataSourceImpl(),
   );
 
   locator.registerLazySingleton<TaskManagementDataSource>(
@@ -75,30 +96,55 @@ void setupLocator() {
   );
 
   locator.registerLazySingleton<TaskRepository>(
-    () => TaskRepositoryImpl(locator<TaskDataSource>()),
+    () => TaskRepositoryImpl(
+      locator<TaskLocalDataSource>(),
+      locator<TaskDataSource>(),
+    ),
   );
 
   locator.registerLazySingleton<TaskManagementRepository>(
-    () => TaskManagementRepositoryImpl(locator<TaskManagementDataSource>()),
+    () => TaskManagementRepositoryImpl(
+      locator<TaskLocalDataSource>(),
+      locator<SyncQueueDataSource>(),
+    ),
   );
 
   locator.registerLazySingleton<CommentRepository>(
     () => CommentRepositoryImpl(locator<CommentDataSource>()),
   );
 
-  // Feature Services
+  // Feature UseCase
   locator.registerLazySingleton(
-    () => ProjectService(locator<ProjectRepository>()),
+    () => GetOrCreateDefaultProject(locator<ProjectRepository>()),
+  );
+
+  locator.registerLazySingleton(() => FetchTasks(locator<TaskRepository>()));
+
+  locator.registerLazySingleton(
+    () => CreateTask(locator<TaskManagementRepository>()),
   );
 
   locator.registerLazySingleton(
-    () => TaskService(locator<TaskRepository>()),
+    () => UpdateTask(locator<TaskManagementRepository>()),
+  );
+  locator.registerLazySingleton(() => AddComment(locator<CommentRepository>()));
+  locator.registerLazySingleton(
+    () => FetchComments(locator<CommentRepository>()),
+  );
+  locator.registerLazySingleton(
+    () => InitialSyncTasks(locator<TaskRepository>()),
   );
 
   locator.registerLazySingleton(
-    () => TaskManagementService(locator<TaskManagementRepository>()),
+    () => BackgroundSyncEngine(
+      locator<SyncQueueDataSource>(),
+      locator<TaskManagementDataSource>(),
+      locator<TaskLocalDataSource>(),
+      locator<NetworkInfo>(),
+    ),
   );
-  locator.registerLazySingleton(
-    () => CommentService(locator<CommentRepository>()),
+
+  locator.registerLazySingleton<AppBootstrap>(
+    () => AppBootstrap(locator<BackgroundSyncEngine>(), locator<NetworkInfo>()),
   );
 }

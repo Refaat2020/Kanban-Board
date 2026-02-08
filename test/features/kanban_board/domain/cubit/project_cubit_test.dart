@@ -1,21 +1,21 @@
 import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:kanban_board/common/model/failure_model.dart';
-import 'package:kanban_board/features/kanban_board/domain/cubit/project_cubit.dart';
-import 'package:kanban_board/features/kanban_board/domain/service/project_service.dart';
+import 'package:kanban_board/features/kanban_board/domain/usecases/get_or_create_default_project.dart';
+import 'package:kanban_board/features/kanban_board/presentation/cubit/project_cubit.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
 import 'project_cubit_test.mocks.dart';
 
 @GenerateMocks([
-  ProjectService,
+  GetOrCreateDefaultProject,
 ])
 void main() {
-  late MockProjectService mockProjectService;
+  late MockGetOrCreateDefaultProject mockProjectService;
 
   setUp(() {
-    mockProjectService = MockProjectService();
+    mockProjectService = MockGetOrCreateDefaultProject();
   });
 
   group(
@@ -24,7 +24,7 @@ void main() {
       blocTest<ProjectCubit, ProjectState>(
         'emits [ProjectLoading, ProjectLoaded] when create Project succeeds',
         build: () {
-          when(mockProjectService.getOrCreateDefaultProject())
+          when(mockProjectService.call())
               .thenAnswer((_) async => "123");
 
           return ProjectCubit(mockProjectService);
@@ -43,7 +43,7 @@ void main() {
         build: () {
           const errorMessage = 'Project creation failed';
 
-          when(mockProjectService.getOrCreateDefaultProject())
+          when(mockProjectService.call())
               .thenAnswer((_) async => Future.error(
                     FailureModel(
                       state: 400,

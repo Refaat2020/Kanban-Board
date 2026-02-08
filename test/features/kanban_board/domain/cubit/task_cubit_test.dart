@@ -1,23 +1,27 @@
 import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:kanban_board/common/model/failure_model.dart';
-import 'package:kanban_board/features/kanban_board/data/models/task.dart';
-import 'package:kanban_board/features/kanban_board/domain/cubit/kanban_cubit.dart';
-import 'package:kanban_board/features/kanban_board/domain/service/task_service.dart';
+import 'package:kanban_board/features/kanban_board/domain/entities/task.dart';
+import 'package:kanban_board/features/kanban_board/domain/usecases/fetch_tasks.dart';
+import 'package:kanban_board/features/kanban_board/domain/usecases/initial_sync_tasks.dart';
+import 'package:kanban_board/features/kanban_board/presentation/cubit/kanban_cubit.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
 import 'task_cubit_test.mocks.dart';
 
 @GenerateMocks([
-  TaskService,
+  FetchTasks,
+  InitialSyncTasks,
 ])
 void main() {
-  late MockTaskService mockTaskService;
+  late MockFetchTasks mockTaskService;
+  late MockInitialSyncTasks mockInitialSyncTasks;
   const projectId = '123';
 
   setUp(() {
-    mockTaskService = MockTaskService();
+    mockTaskService = MockFetchTasks();
+    mockInitialSyncTasks = MockInitialSyncTasks();
   });
 
   group(
@@ -27,10 +31,10 @@ void main() {
         'emits [KanbanLoading, KanbanEmptyTasks] when fetch tasks succeeds',
         build: () {
           const projectId = '123';
-          when(mockTaskService.fetchTasks(projectId))
+          when(mockTaskService.call(projectId))
               .thenAnswer((_) async => []);
 
-          return KanbanCubit(mockTaskService);
+          return KanbanCubit(mockTaskService,mockInitialSyncTasks);
         },
         act: (bloc) async {
           await bloc.fetchTasks(projectId);
@@ -53,10 +57,10 @@ void main() {
               projectId: projectId,
             ),
           ];
-          when(mockTaskService.fetchTasks(projectId))
+          when(mockTaskService.call(projectId))
               .thenAnswer((_) async => fetchTasks);
 
-          return KanbanCubit(mockTaskService);
+          return KanbanCubit(mockTaskService,mockInitialSyncTasks);
         },
         act: (bloc) async {
           await bloc.fetchTasks(projectId);
@@ -72,7 +76,7 @@ void main() {
         build: () {
           const errorMessage = 'Project creation failed';
 
-          when(mockTaskService.fetchTasks(projectId))
+          when(mockTaskService.call(projectId))
               .thenAnswer((_) async => Future.error(
                     FailureModel(
                       state: 400,
@@ -80,7 +84,7 @@ void main() {
                     ),
                   ));
 
-          return KanbanCubit(mockTaskService);
+          return KanbanCubit(mockTaskService,mockInitialSyncTasks);
         },
         act: (bloc) async {
           await bloc.fetchTasks(projectId);

@@ -1,7 +1,7 @@
 import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:kanban_board/features/task_management/data/models/timer_state.dart';
-import 'package:kanban_board/features/task_management/domain/cubit/timer_cubit.dart';
+import 'package:kanban_board/features/task_management/presentation/cubit/timer_cubit.dart';
+import 'package:kanban_board/features/task_management/presentation/cubit/timer_state.dart';
 
 void main() {
   late TimerCubit timerCubit;

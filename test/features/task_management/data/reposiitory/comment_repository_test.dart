@@ -1,8 +1,8 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:kanban_board/common/model/failure_model.dart';
 import 'package:kanban_board/features/task_management/data/data_source/comment_data_source.dart';
-import 'package:kanban_board/features/task_management/data/models/comment.dart';
 import 'package:kanban_board/features/task_management/data/repository/comment_repository_impl.dart';
+import 'package:kanban_board/features/task_management/domain/entities/comment.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 

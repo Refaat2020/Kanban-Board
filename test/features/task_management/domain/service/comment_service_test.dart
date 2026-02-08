@@ -1,8 +1,9 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:kanban_board/common/model/failure_model.dart';
-import 'package:kanban_board/features/task_management/data/models/comment.dart';
+import 'package:kanban_board/features/task_management/data/models/comment_model.dart';
 import 'package:kanban_board/features/task_management/data/repository/comment_repository.dart';
-import 'package:kanban_board/features/task_management/domain/service/comment_service.dart';
+import 'package:kanban_board/features/task_management/domain/usecases/add_comment.dart';
+import 'package:kanban_board/features/task_management/domain/usecases/fetch_comments.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
@@ -14,12 +15,14 @@ import 'comment_service_test.mocks.dart';
 void main() {
   late MockCommentRepository mockCommentRepository;
 
-  late CommentService commentService;
+  late AddComment addComment;
+  late FetchComments fetchComments;
 
   setUp(() {
     mockCommentRepository = MockCommentRepository();
 
-    commentService = CommentService(mockCommentRepository);
+    addComment = AddComment(mockCommentRepository);
+    fetchComments = FetchComments(mockCommentRepository);
   });
 
   group(
@@ -34,7 +37,7 @@ void main() {
         );
 
         // Act
-        final result = await commentService.fetchComments(taskId);
+        final result = await fetchComments.call(taskId);
 
         // Assert
         expect(result, []);
@@ -44,14 +47,14 @@ void main() {
       test('fetchComments should return an  list when success', () async {
         // Arrange
         const taskId = '123';
-        final comments = [Comment(id: '456', content: 'Hello, world!')];
+        final comments = [CommentModel(id: '456', content: 'Hello, world!')];
 
         when(mockCommentRepository.fetchComments(taskId)).thenAnswer(
           (_) async => comments,
         );
 
         // Act
-        final result = await commentService.fetchComments(taskId);
+        final result = await fetchComments.call(taskId);
 
         // Assert
         expect(result, comments);
@@ -70,7 +73,7 @@ void main() {
 
           // Act & Assert
           expect(
-            () async => await commentService.fetchComments(taskId),
+            () async => await fetchComments.call(taskId),
             throwsA(isA<FailureModel>()
                 .having((e) => e.message, 'message', errorMessage)),
           );
@@ -85,22 +88,22 @@ void main() {
     () {
       test('addComment should return a comment when success', () async {
         // Arrange
-        final comment = Comment(
+        final comment = CommentModel(
           content: "content",
           taskId: "123",
         );
         final createdComment =
-            Comment(content: "content", taskId: "123", id: '1');
+            CommentModel(content: "content", taskId: "123", id: '1');
 
         when(mockCommentRepository.addComment(comment)).thenAnswer(
           (_) async => createdComment,
         );
 
         // Act
-        final result = await commentService.addComment(comment);
+        final result = await addComment.call(comment);
 
         // Assert
-        expect(result, isA<Comment>());
+        expect(result, isA<CommentModel>());
         verify(mockCommentRepository.addComment(comment)).called(1);
       });
 
@@ -109,7 +112,7 @@ void main() {
         () async {
           // Arrange
           const errorMessage = "problem with adding comment";
-          final comment = Comment(
+          final comment = CommentModel(
             content: "content",
             taskId: "123",
           );
@@ -119,7 +122,7 @@ void main() {
 
           // Act & Assert
           expect(
-            () async => await commentService.addComment(comment),
+            () async => await addComment.call(comment),
             throwsA(isA<FailureModel>()
                 .having((e) => e.message, 'message', errorMessage)),
           );
